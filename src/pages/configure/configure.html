@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-title>
+      Make It Happen!
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content [ngClass]="{'completed' : isComplete}">
+      {{title}}
+    </ion-card-content>
+  </ion-card>
+
+  <ion-buttons end>
+    <button ion-button block icon-left color="default" (click)="editTodo(todo)"><ion-icon name="md-create"></ion-icon>Edit Item</button>
+  </ion-buttons>
+  <ion-buttons end>
+    <button ion-button block icon-left color="secondary"(click)="toggleComplete(todo)"><ion-icon name="md-checkmark"></ion-icon>Mark Complete</button>
+  </ion-buttons>
+  <ion-buttons end>
+    <button ion-button block icon-left color="danger"(click)="deleteTodo(todo)"><ion-icon name="md-trash"></ion-icon>Delete</button>
+  </ion-buttons>
+</ion-content>
