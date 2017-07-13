@@ -3,7 +3,7 @@
   page-home {
 
     .scroll-content {
-      background-color: #ecf0f1;
+      background-color: map-get($colors, secondary);
       display: flex !important;
       justify-content: center;
     }
@@ -21,11 +21,21 @@
     ion-item {
       margin-top: 20px;
       border-radius: 0px;
+      background: map-get($colors, favorite);
+      color: white;
     }
 
     ion-item {
       border: none !important;
       font-weight: bold !important;
+    }
+
+    .power {
+      color: map-get($colors, danger);
+    }
+
+    .add {
+      color: map-get($colors, edit);
     }
 
   }

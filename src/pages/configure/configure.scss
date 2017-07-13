@@ -6,4 +6,8 @@ page-configure {
     text-decoration: line-through;
   }
 
+  .scroll-content {
+    background-color: map-get($colors, secondary);
+  }
+
 }

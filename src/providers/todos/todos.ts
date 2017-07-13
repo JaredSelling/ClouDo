@@ -17,10 +17,12 @@ export class TodosProvider {
   db: any;
   remote: any;
 
-  constructor(public http: Http) {
+  constructor() {}
+
+  init(details) {
     this.db = new PouchDB('cloudo');
 
-    this.remote = 'http://localhost:5984/cloudo';
+    this.remote = details.userDBs.supertest;
 
     let options = {
       live: true,
@@ -29,43 +31,54 @@ export class TodosProvider {
     };
 
     this.db.sync(this.remote, options);
+    console.log(this.db);
   }
+
+logout() {
+  this.data = null;
+
+  this.db.destroy().then(() => {
+    console.log("database removed");
+  });
+}
+
 
 getTodos() {
 
-  if (this.data) {
-    return Promise.resolve(this.data);
-  }
+    if (this.data) {
+      return Promise.resolve(this.data);
+    }
 
-  return new Promise(resolve => {
+    return new Promise(resolve => {
 
-    this.db.allDocs({
+      this.db.allDocs({
 
-      include_docs: true
+        include_docs: true
 
-    }).then((result) => {
+      }).then((result) => {
 
-      this.data = [];
+        this.data = [];
+        console.log('BEFORE reading docs: '+JSON.stringify(this.data));
 
-      let docs = result.rows.map((row) => {
-        this.data.push(row.doc);
+        let docs = result.rows.map((row) => {
+          this.data.push(row.doc);
+        });
+
+        resolve(this.data);
+        console.log('AFTER reading docs: '+JSON.stringify(this.data));
+        this.db.changes({live: true, since: 'now', include_docs: true}).on('change', (change) => {
+          this.handleChange(change);
+        });
+
+      }).catch((error) => {
+
+        console.log(error);
+
       });
-
-      resolve(this.data);
-
-      this.db.changes({live: true, since: 'now', include_docs: true}).on('change', (change) => {
-        this.handleChange(change);
-      });
-
-    }).catch((error) => {
-
-      console.log(error);
 
     });
 
-  });
-
-}
+  }
 
   createTodo(todo) {
     this.db.post(todo);
@@ -76,6 +89,7 @@ getTodos() {
       console.log(err);
     });
   }
+
 
   deleteTodo(todo) {
     this.db.remove(todo).catch((err) => {

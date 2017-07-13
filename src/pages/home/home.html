@@ -1,17 +1,21 @@
 <ion-header no-border>
   <ion-navbar color="secondary">
+    <ion-buttons start>
+      <button ion-button icon-only (click)="logout()"><ion-icon name="power" class="power"></ion-icon></button>
+    </ion-buttons>
     <ion-title>
       Make It Happen!
     </ion-title>
+
     <ion-buttons end>
-      <button ion-button icon-only (click)="createTodo()"><ion-icon name="md-add-circle"></ion-icon></button>
+      <button ion-button icon-only (click)="createTodo()"><ion-icon name="md-add" class="add" ></ion-icon></button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
 <ion-content>
 
-  <ion-list no-lines>
+  <ion-list reorder="true" (ionItemReorder)="reorderItems($event)" no-lines>
     <ion-item *ngFor="let todo of todos" (click)="viewTodo(todo)" [ngClass]="{'completed' : todo.isComplete}">
       {{todo.title}}
     </ion-item>
